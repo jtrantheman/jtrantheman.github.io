@@ -19,16 +19,8 @@
     </header>
 
     <!-- Dynamically Include HTML Content -->
-    <section id="home-page">
-        {% include home.html %}
-    </section>
-
-    <section id="about-page">
-        {% include about.html %}
-    </section>
-
-    <section id="contact-page">
-        {% include contact.html %}
+    <section id="content">
+        <!-- inject content here -->
     </section>
 
     <footer>
@@ -37,33 +29,59 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const navButtons = document.querySelectorAll('.nav', '.btn');
-        const sections = document.querySelectorAll('section');
+        const contentSection = document.getElementById('content');
 
         // Function to handle the button click logic
-        function handleButtonClick(button) {
+        function handleNavClick(button) {
             // Remove active class from all buttons
             navButtons.forEach(btn => btn.classList.remove('active'));
 
             // Hide all panes
-            sections.forEach(section => section.style.display = 'none');
+            // sections.forEach(section => section.style.display = 'none');
 
             // Add active class to the clicked button
             button.classList.add('active');
+            
+            // Load the corresponding content into the content section
+            loadContent(button.id);
 
             // Show the corresponding pane
-            const sectionId = button.id + '-page'; // Construct section ID based on button ID
-            document.getElementById(sectionId).style.display = 'block';
+            // const sectionId = button.id + '-page'; // Construct section ID based on button ID
+            // document.getElementById(sectionId).style.display = 'block';
         }
         // Initially hide all sections
-        sections.forEach(section => section.style.display = 'none');
+        // sections.forEach(section => section.style.display = 'none');
+
+        // Function to load HTML content into the content section dynamically
+        function loadContent(buttonID) {
+            let url = 'templates/' + buttonID + '.html';
+
+            // Fetch content from the appropriate HTML file based on button clicked
+            if (url) {
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to load content for ${sectionId}`);
+                        }
+                        return response.text();
+                    })
+                    .then(content => {
+                        contentSection.innerHTML = content;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        contentSection.innerHTML = '<p>Sorry, content could not be loaded.</p>';
+                    });
+            }
+        }
 
         // Simulate a click on the 'home' button to load the home page initially
-        handleButtonClick(navButtons[0]);
+        handleNavClick(navButtons[0]);
         
         // Add event listeners to all buttons
         navButtons.forEach(button => {
             button.addEventListener('click', function() {
-                handleButtonClick(this);
+                handleNavClick(this);
             });
         });
 
