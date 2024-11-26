@@ -3,57 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website Title</title>
+    <title>Justin Tran</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Website</h1>
-        <nav>
-            <ul>
-                <li><button class= "nav btn" id="home">Home</button></li>
-                <li><button class= "nav btn" id="about">About</button></li>
-                <li><button class= "nav btn" id="contact">Contact</button></li>
-            </ul>
-        </nav>
+    <header class="bg-dark text-white py-4">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Justin Tran</h1>
+            <p class="lead mb-4">Full Stack Data Scientist<br>B.S in Biomedical Engineering at the University of Virginia</p>
+            <nav class="text-left">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><button class="nav btn btn-light rounded-pill" id="home">Home</button></li>
+                    <li class="list-inline-item"><button class="nav btn btn-light" id="about">About</button></li>
+                    <li class="dropdown list-inline-item">
+                        <button class="nav btn btn-light dropdown-toggle" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Projects
+                        </button>
+                        <ul class="dropdown-menu " aria-labelledby="projectsDropdown">
+                            <li><a class="dropdown-item" href="#" id="project1">Project 1</a></li>
+                            <li><a class="dropdown-item" href="#" id="project2">Project 2</a></li>
+                            <li><a class="dropdown-item" href="#" id="project3">Project 3</a></li>
+                        </ul>
+                    </li>
+                    <li class="list-inline-item"><button class="nav btn btn-light" id="contact">Contact</button></li>
+                    
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <!-- Dynamically Include HTML Content -->
     <section id="content">
         <!-- inject content here -->
     </section>
+    <section id="content-project" style="display:none">
+        <!-- inject content here -->
+    </section>
 
-    <footer>
-        <p>&copy; 2024 Justin Tran. All rights reserved.</p>
+    <footer class="bg-dark text-white py-3">
+        <div class="container text-center">
+            <p>&copy; 2024 Justin Tran. All rights reserved.</p>
+        </div>
     </footer>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const navButtons = document.querySelectorAll('.nav', '.btn');
+        const navButtons = document.querySelectorAll('.nav','.btn');
+        const dropDownItems = document.querySelectorAll('.dropdown-item');
         const contentSection = document.getElementById('content');
+        const projectSection = document.getElementById('content-project')
 
         // Function to handle the button click logic
         function handleNavClick(button) {
             // Remove active class from all buttons
             navButtons.forEach(btn => btn.classList.remove('active'));
+            
 
-            // Hide all panes
-            // sections.forEach(section => section.style.display = 'none');
+            
 
             // Add active class to the clicked button
+            //if (button.classList.contains('.nav')) {
+            //    button.classList.add('active');
+            //}
             button.classList.add('active');
             
             // Load the corresponding content into the content section
-            loadContent(button.id);
+            if (button.id !== 'projectsDropdown') {
+                loadContent(contentSection, button.id);
 
-            // Show the corresponding pane
-            // const sectionId = button.id + '-page'; // Construct section ID based on button ID
-            // document.getElementById(sectionId).style.display = 'block';
+                // Hide project sections
+                projectSection.style.display = 'none'
+            }
+
         }
-        // Initially hide all sections
-        // sections.forEach(section => section.style.display = 'none');
 
         // Function to load HTML content into the content section dynamically
-        function loadContent(buttonID) {
+        function loadContent(sect, buttonID) {
             let url = 'templates/' + buttonID + '.html';
 
             // Fetch content from the appropriate HTML file based on button clicked
@@ -66,11 +95,11 @@
                         return response.text();
                     })
                     .then(content => {
-                        contentSection.innerHTML = content;
+                        sect.innerHTML = content;
                     })
                     .catch(error => {
                         console.error(error);
-                        contentSection.innerHTML = '<p>Sorry, content could not be loaded.</p>';
+                        sect.innerHTML = '<p>Sorry, content could not be loaded.</p>';
                     });
             }
         }
@@ -82,6 +111,21 @@
         navButtons.forEach(button => {
             button.addEventListener('click', function() {
                 handleNavClick(this);
+            });
+        });
+
+        // Add event listeners for the dropdown items (projects)
+        const projectItems = document.querySelectorAll('.dropdown-item');
+        projectItems.forEach(projectItem => {
+            projectItem.addEventListener('click', function(e) {
+                e.preventDefault();  // Prevent the default anchor behavior
+                let projectContent = 
+                dropDownItems.forEach(item => item.classList.remove('active'));
+                projectItem.classList.add('active');
+                loadContent(contentSection, projectItem.id)
+                loadContent(projectSection, projectItem.id+'content')
+                projectSection.style.display = 'block'
+
             });
         });
 

@@ -1,26 +1,55 @@
 /* Global Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /* Light background for content */
+    color: #333; /* Dark text for readability */
 }
 
+/* Header Styling */
 header {
-    background-color: #333; /* Dark Grey Background */
-    color: white;
-    padding: 20px;
-    text-align: center;
+    background: linear-gradient(45deg, #2d2d2d, #555); /* Subtle gradient */
+    padding-top: 50px; /* Add some top padding */
+    padding-bottom: 50px; /* Add some bottom padding */
 }
 
-header nav ul {
+h1 {
+    font-size: 3rem; /* Increase the size of the name */
+    font-weight: bold; /* Make the name stand out */
+    letter-spacing: 2px; /* Slight spacing for better readability */
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.25rem; /* Increase font size for readability */
+    margin-bottom: 30px; /* Add margin below the text */
+    font-weight: 300; /* Make the subtitle text lighter */
+}
+
+nav {
+    margin-top: 30px;
+}
+
+/* Navbar styling */
+.nav {
     list-style: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between the buttons */
+    position: relative; /* Ensure the dropdown menu is positioned correctly */
+    font-size: 1rem; /* Size of the text */
+    padding: 12px 30px; /* Padding for a more clickable area */
+    background-color: #f8f9fa; /* Light background for the buttons */
+    border-radius: 50px; /* Rounded corners for a modern look */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition on hover */
 }
 
-header nav ul li {
-    display: inline;
-    margin: 0 10px;
+.nav:hover, .nav:focus {
+    color: white; /* Change text to white */
+    transform: scale(1.05); /* Slight scale effect */
 }
 
 /* Button Styles */
@@ -28,7 +57,7 @@ header nav ul li {
     color: #333;                  /* Dark text color for contrast */
     background-color: #666;        /* Soft grey background */
     border: none;                  /* No border */
-    padding: 10px 20px;             /* Padding around the text */
+    padding: 12px 25px;             /* Padding around the text */
     font-size: 16px;                /* Font size */
     cursor: pointer;               /* Pointer cursor on hover */
     text-decoration: none;          /* No underline */
@@ -51,35 +80,130 @@ header nav ul li {
     background-color: #666;            /* Darker shade on hover */
     transform: scale(1.1);             /* Slightly larger on hover */
 }
-
-/* Hover Effect */
-.btn:hover {
-    background-color: #888;        /* Slightly lighter grey on hover */
-    color: white;                  /* White text on hover */
-    text-decoration: underline;     /* Underline text on hover */
-    transform: scale(1.05);         /* Slight scale effect for button */
+/* Style for the dropdown button */
+.dropdown-toggle {
+    color: #333; /* Dark text */
+    background-color: #666; /* Grey background */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
 
-/* Section Styles */
+/* Hover effect for dropdown button */
+
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background-color: #444; /* Dark background for the dropdown */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    padding: 10px 0; /* Padding for dropdown items */
+    opacity: 0; /* Make it invisible initially */
+    transition: opacity 0.3s ease, visibility 0s 0.3s; /* Fade-in effect */
+}
+
+/* Show dropdown items when the button is hovered */
+.dropdown:hover .dropdown-menu {
+    visibility: visible;
+    opacity: 1; /* Make menu visible */
+    transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+/* Style for dropdown items */
+.dropdown-item {
+    color: #ddd; /* Lighter text color */
+    padding: 10px 20px; /* Padding around the text */
+    font-size: 14px; /* Font size */
+    text-decoration: none; /* Remove underline */
+    display: block; /* Make items block level for better clickability */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+/* Hover effect for dropdown items */
+.dropdown-item:hover {
+    background-color: #555; /* Darker background on hover */
+    color: white; /* White text */
+    transform: translateX(3px); /* Slight slide to the right */
+}
+
+/* Style for active dropdown items */
+.dropdown-item.active {
+    background-color: #333; /* Even darker background for active item */
+    color: white; /* White text */
+}
+
+/* Main Content Section */
 section {
-    padding: 20px;
-    margin: 20px 0;
+    padding: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Ensure space for the fixed footer */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 section h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
     color: #333;
 }
 
+section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+/* Footer */
 footer {
     background-color: #333; /* Dark Grey Footer */
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     position: fixed;
     width: 100%;
     bottom: 0;
+    left: 0;
 }
 
 footer p {
     margin: 0;
+    font-size: 14px;
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    #content {
+        padding: 20px;
+        margin-top: 20px;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
