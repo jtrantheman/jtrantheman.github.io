@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #333; /* Dark Grey Background */
     color: white;
     padding: 20px;
     text-align: center;
@@ -23,14 +23,41 @@ header nav ul li {
     margin: 0 10px;
 }
 
-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+/* Button Styles */
+.btn {
+    color: #333;                  /* Dark text color for contrast */
+    background-color: #666;        /* Soft grey background */
+    border: none;                  /* No border */
+    padding: 10px 20px;             /* Padding around the text */
+    font-size: 16px;                /* Font size */
+    cursor: pointer;               /* Pointer cursor on hover */
+    text-decoration: none;          /* No underline */
+    font-weight: bold;              /* Bold text */
+    border-radius: 5px;             /* Rounded corners */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
 }
 
-header nav ul li a:hover {
-    text-decoration: underline;
+.btn.active {
+    background-color: #555;            /* Slightly lighter dark color */
+    color: white;                      /* White text */
+    border: 2px solid #888;            /* Subtle border to add more definition */
+    border-radius: 5px;                /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth background change and slight scaling effect */
+    transform: scale(1.05);             /* Slightly enlarge button for emphasis */
+}
+
+.btn.active:hover {
+    background-color: #666;            /* Darker shade on hover */
+    transform: scale(1.1);             /* Slightly larger on hover */
+}
+
+/* Hover Effect */
+.btn:hover {
+    background-color: #888;        /* Slightly lighter grey on hover */
+    color: white;                  /* White text on hover */
+    text-decoration: underline;     /* Underline text on hover */
+    transform: scale(1.05);         /* Slight scale effect for button */
 }
 
 /* Section Styles */
@@ -44,7 +71,7 @@ section h2 {
 }
 
 footer {
-    background-color: #333;
+    background-color: #333; /* Dark Grey Footer */
     color: white;
     text-align: center;
     padding: 10px;

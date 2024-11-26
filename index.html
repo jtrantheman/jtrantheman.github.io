@@ -11,30 +11,65 @@
         <h1>Welcome to My Website</h1>
         <nav>
             <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><button class= "nav btn" id="home">Home</button></li>
+                <li><button class= "nav btn" id="about">About</button></li>
+                <li><button class= "nav btn" id="contact">Contact</button></li>
             </ul>
         </nav>
     </header>
 
-    <section id="home">
-        <h2>Home</h2>
-        <p>This is a simple homepage for your GitHub Pages site.</p>
+    <!-- Dynamically Include HTML Content -->
+    <section id="home-page">
+        {% include home.html %}
     </section>
 
-    <section id="about">
-        <h2>About</h2>
-        <p>This is where you can tell visitors about your website or yourself.</p>
+    <section id="about-page">
+        {% include about.html %}
     </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Contact info: email@example.com</p>
+    <section id="contact-page">
+        {% include contact.html %}
     </section>
 
     <footer>
         <p>&copy; 2024 Your Name. All rights reserved.</p>
     </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navButtons = document.querySelectorAll('.nav', '.btn');
+        const sections = document.querySelectorAll('section');
+
+        // Function to handle the button click logic
+        function handleButtonClick(button) {
+            // Remove active class from all buttons
+            navButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Hide all panes
+            sections.forEach(section => section.style.display = 'none');
+
+            // Add active class to the clicked button
+            button.classList.add('active');
+
+            // Show the corresponding pane
+            const sectionId = button.id + '-page'; // Construct section ID based on button ID
+            document.getElementById(sectionId).style.display = 'block';
+        }
+        // Initially hide all sections
+        sections.forEach(section => section.style.display = 'none');
+
+        // Simulate a click on the 'home' button to load the home page initially
+        handleButtonClick(navButtons[0]);
+        
+        // Add event listeners to all buttons
+        navButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                handleButtonClick(this);
+            });
+        });
+
+
+    });
+</script>
 </body>
 </html>
+
