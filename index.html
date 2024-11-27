@@ -17,6 +17,7 @@
                 <ul class="list-inline">
                     <li class="list-inline-item"><button class="nav btn btn-light rounded-pill" id="home">Home</button></li>
                     <li class="list-inline-item"><button class="nav btn btn-light rounded-pill" id="about">About</button></li>
+                    <li class="list-inline-item"><button class="nav btn btn-light rounded-pill" id="resume">Resume</button></li>
                     <li class="dropdown list-inline-item">
                         <button class="nav btn btn-light dropdown-toggle rounded-pill" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Projects
@@ -50,44 +51,38 @@
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const navButtons = document.querySelectorAll('.nav','.btn');
-        const dropDownItems = document.querySelectorAll('.dropdown-item');
-        const contentSection = document.getElementById('content');
-        const projectSection = document.getElementById('content-project')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav','.btn');
+            const dropDownItems = document.querySelectorAll('.dropdown-item');
+            const contentSection = document.getElementById('content');
+            const projectSection = document.getElementById('content-project')
 
-        // Function to handle the button click logic
-        function handleNavClick(button) {
-            // Remove active class from all buttons
-            navButtons.forEach(btn => btn.classList.remove('active'));
-            
+            // Function to handle the button click logic
+            function handleNavClick(button) {
+                // Remove active class from all buttons
+                navButtons.forEach(btn => btn.classList.remove('active'));
 
-            
+                // Add active class to the clicked button
+                button.classList.add('active');
+                
+                // Load the corresponding content into the content section
+                if (button.id !== 'projectsDropdown') {
+                    loadContent(contentSection, button.id);
 
-            // Add active class to the clicked button
-            //if (button.classList.contains('.nav')) {
-            //    button.classList.add('active');
-            //}
-            button.classList.add('active');
-            
-            // Load the corresponding content into the content section
-            if (button.id !== 'projectsDropdown') {
-                loadContent(contentSection, button.id);
+                    // Hide project sections
+                    projectSection.style.display = 'none'
+                }
 
-                // Hide project sections
-                projectSection.style.display = 'none'
             }
 
-        }
+            // Function to load HTML content into the content section dynamically
+            function loadContent(sect, buttonID) {
+                let url = 'templates/' + buttonID + '.html';
 
-        // Function to load HTML content into the content section dynamically
-        function loadContent(sect, buttonID) {
-            let url = 'templates/' + buttonID + '.html';
-
-            // Fetch content from the appropriate HTML file based on button clicked
-            if (url) {
-                fetch(url)
+                // Fetch content from the appropriate HTML file based on button clicked
+                if (url) {
+                    fetch(url)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`Failed to load content for ${sectionId}`);
@@ -95,43 +90,72 @@
                         return response.text();
                     })
                     .then(content => {
-                        sect.innerHTML = content;
+                        // Create a temporary div to parse the content
+                        let tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = content;
+
+                        // Insert the content into the section
+                        sect.innerHTML = tempDiv.innerHTML;
+
+                        // Now, execute scripts from the injected content
+                        const newScripts = tempDiv.querySelectorAll('script');
+                        const promises = [];
+
+                        newScripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            
+                            if (script.src) {
+                                newScript.src = script.src;  // If the script has a src attribute, copy it
+                                promises.push(new Promise((resolve, reject) => {
+                                    newScript.onload = resolve;
+                                    newScript.onerror = reject;
+                                    document.body.appendChild(newScript); // Append the script to execute it
+                                }));
+                            } else {
+                                newScript.text = script.text; // Otherwise, use the inline text
+                                document.body.appendChild(newScript); // Append the inline script to execute it
+                            }
+                        });
+
+                        // Wait for all scripts to load and execute
+                        Promise.all(promises).then(() => {
+                            console.log("All scripts loaded and executed");
+                        }).catch((error) => {
+                            console.error("Error loading scripts: ", error);
+                        });
                     })
                     .catch(error => {
                         console.error(error);
                         sect.innerHTML = '<p>Sorry, content could not be loaded.</p>';
                     });
+                }
             }
-        }
 
-        // Simulate a click on the 'home' button to load the home page initially
-        handleNavClick(navButtons[0]);
-        
-        // Add event listeners to all buttons
-        navButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                handleNavClick(this);
+            // Simulate a click on the 'home' button to load the home page initially
+            handleNavClick(navButtons[0]);
+            
+            // Add event listeners to all buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    handleNavClick(this);
+                });
+            });
+
+            // Add event listeners for the dropdown items (projects)
+            const projectItems = document.querySelectorAll('.dropdown-item');
+            projectItems.forEach(projectItem => {
+                projectItem.addEventListener('click', function(e) {
+                    e.preventDefault();  // Prevent the default anchor behavior
+                    dropDownItems.forEach(item => item.classList.remove('active'));
+                    projectItem.classList.add('active');
+                    loadContent(contentSection, projectItem.id)
+                    loadContent(projectSection, projectItem.id+'content')
+                    projectSection.style.display = 'block'
+
+                });
             });
         });
-
-        // Add event listeners for the dropdown items (projects)
-        const projectItems = document.querySelectorAll('.dropdown-item');
-        projectItems.forEach(projectItem => {
-            projectItem.addEventListener('click', function(e) {
-                e.preventDefault();  // Prevent the default anchor behavior
-                let projectContent = 
-                dropDownItems.forEach(item => item.classList.remove('active'));
-                projectItem.classList.add('active');
-                loadContent(contentSection, projectItem.id)
-                loadContent(projectSection, projectItem.id+'content')
-                projectSection.style.display = 'block'
-
-            });
-        });
-
-
-    });
-</script>
+    </script>
 </body>
 </html>
 

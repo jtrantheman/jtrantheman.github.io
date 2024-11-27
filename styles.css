@@ -136,6 +136,31 @@ nav {
     color: white; /* White text */
 }
 
+/* Card Styling */
+.card-body {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* White background for the content */
+}
+
+/* Active Card Styling */
+.card-body.active {
+    background-color: #555; /* Dark grey background for active state */
+    color: white; /* White text for contrast */
+    transform: scale(1.02); /* Slightly scale up the card when active */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow for focus */
+}
+
+/* Hover effect for card body */
+.card-body:hover {
+    transform: translateY(-5px); /* Slight lift when hovered */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for emphasis */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
 /* Main Content Section */
 section {
     padding: 40px;
@@ -206,4 +231,49 @@ footer p {
         margin-left: auto;
         margin-right: auto;
     }
+}
+/* Skills Section */S
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Skill Categories */
+.skills-category {
+    margin-bottom: 40px;
+}
+
+.skills-category h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Skills List */
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Individual Skill Tags */
+.skill-tag {
+    background-color: #f0f0f0;
+    color: #555;
+    font-size: 1rem;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover Effect on Skill Tags */
+.skill-tag:hover {
+    background-color: #333;
+    color: white;
 }

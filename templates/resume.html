@@ -1,0 +1,114 @@
+<div>
+    <h2 class="display-4 text-center mb-4">My Resume</h2>
+    <p class="lead text-center mb-4">Here’s a brief overview of my career and accomplishments. However, if you prefer, you can download my detailed resume using the link below.</p>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <!-- Resume Download Link -->
+                <a href="templates/Resume.pdf" class="btn btn-light btn-md rounded-pill" download>
+                    <i class="bi bi-download"></i> Download My Resume
+                </a>
+            </div>
+        </div>
+
+        <!-- Optional Sections for Career Overview, Education, and Skills -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body resume" id="education">
+                        <h4 class="card-title">Education</h4>
+                        <ul>
+                            <li>B.S. in Biomedical Engineering, University of Virginia</li>
+                            <li>Data Science Coursework and Certifications (Coursera, etc.)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body resume" id="experience">
+                        <h4 class="card-title">Work Experience</h4>
+                        <ul>
+                            <li>Full Stack Data Scientist, Defense Contractor (Current Role)</li>
+                            <li>Data Analyst Intern, XYZ Corp.</li>
+                            <li>Software Developer, ABC Company</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body resume" id="skills">
+                        <h4 class="card-title">Skills and Technologies</h4>
+                        <ul>
+                            <li>Python, R, MATLAB</li>
+                            <li>Graph Databases, LLMs, Insider Threat Databases</li>
+                            <li>Front-end Technologies: HTML, CSS, JavaScript</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Ensure this function doesn't run multiple times
+    function initializeResumeSection() {
+        let projectSection = document.getElementById('content-project');
+        let resumeCards = document.querySelectorAll('.card-body.resume');  // Declare within the function scope
+        
+        resumeCards.forEach(resumeCard => {
+            // Remove previous event listeners to prevent multiple bindings
+            resumeCard.removeEventListener('click', resumeCardClickListener);
+            resumeCard.addEventListener('click', resumeCardClickListener);
+        });
+    }
+
+    // Event listener function for resume cards
+    function resumeCardClickListener(e) {
+        e.preventDefault();  // Prevent the default anchor behavior
+
+        // Remove 'active' class from all cards
+        let resumeCards = document.querySelectorAll('.card-body.resume');
+        let projectSection = document.getElementById('content-project');
+        resumeCards.forEach(item => item.classList.remove('active'));
+
+        // Add 'active' class to clicked card
+        this.classList.add('active');
+        
+        // Load the corresponding content
+        loadContent(projectSection, this.id + 'content');
+        projectSection.style.display = 'block';
+    }
+
+    // Function to load HTML content into the content section dynamically
+    function loadContent(sect, buttonID) {
+        let url = 'templates/' + buttonID + '.html';
+
+        if (url) {
+            fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load content for ${buttonID}`);
+                }
+                return response.text();
+            })
+            .then(content => {
+                sect.innerHTML = content;
+                // Reinitialize event listeners for newly loaded content
+                initializeResumeSection();
+            })
+            .catch(error => {
+                console.error(error);
+                sect.innerHTML = '<p>Sorry, content could not be loaded.</p>';
+            });
+        }
+    }
+
+    // Initial setup: Initialize the resume section
+    initializeResumeSection();
+
+</script>
