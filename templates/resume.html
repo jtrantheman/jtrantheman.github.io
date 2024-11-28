@@ -67,21 +67,56 @@
         });
     }
 
-    // Event listener function for resume cards
+    function smoothScrollTo(element, duration = 1000) {
+        const start = window.pageYOffset;
+        const end = element.getBoundingClientRect().top + window.pageYOffset;
+        const distance = end - start;
+        let startTime = null;
+    
+        // Easing function for smooth scroll (easeInOutQuad)
+        function easing(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+        }
+    
+        // Scroll animation function
+        function animateScroll(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = timestamp - startTime;
+            const scroll = easing(progress, start, distance, duration);
+    
+            window.scrollTo(0, scroll);
+    
+            if (progress < duration) {
+                window.requestAnimationFrame(animateScroll);
+            }
+        }
+    
+        window.requestAnimationFrame(animateScroll);
+    }
+    
     function resumeCardClickListener(e) {
         e.preventDefault();  // Prevent the default anchor behavior
-
+    
         // Remove 'active' class from all cards
         let resumeCards = document.querySelectorAll('.card-body.resume');
         let projectSection = document.getElementById('content-project');
         resumeCards.forEach(item => item.classList.remove('active'));
-
+    
         // Add 'active' class to clicked card
         this.classList.add('active');
         
         // Load the corresponding content
         loadContent(projectSection, this.id + 'content');
         projectSection.style.display = 'block';
+    
+        // Add a timeout to delay the scroll action until after content is shown
+        setTimeout(function() {
+            // Scroll smoothly to the content section with a custom duration
+            smoothScrollTo(projectSection, 500); // Duration set to 1200ms (1.2 seconds)
+        }, 50); // Adjust the delay if needed
     }
 
     // Function to load HTML content into the content section dynamically
